@@ -3,10 +3,19 @@ import requests #IMPORT LIBRARY BY REQUEST
 # define function to enter user name entered by app uers nd desired task
 def username():
     a  = raw_input("enter instagram user name =  ")
-    b  = raw_input("enter what kind of action u want to perform your options are= 1. like a post  2. comment = ")
     print a
-    print b
+
 username()
+
+#print all the option for user to do specific task
+print " 1. \n get user id by username" \
+          " 2. \n get user recent post" \
+          " 3. \n like a post of user" \
+          " 4. \n comment on a post of user" \
+         "  5. \n get comment id of user " \
+         " 6. \n delete the comment from a post of user " \
+         " 7. \n get average no  of comments "
+
 
 #using a access token for app
 APP_ACCESS_TOKEN = '1560024934.53ba031.1ef6f902d8044a77bccbd08b0c200f96'
@@ -113,7 +122,7 @@ get_comment_id('shubham.is.here')
 
 #define function to delete a comment
 def delete_comment(insta_username):
-    media_id = get_user_recent_posts(insta_username)
+    media_id = get_comment_id(insta_username)
     request_url = ( BASE_URL + '/media/%s/comments/{comment-id}?access_token=%s') % (media_id , APP_ACCESS_TOKEN)
     delete_comment  = requests.get(request_url).json()
     word_in_comment = raw_input("enter word u thing in comment=")
@@ -121,6 +130,9 @@ def delete_comment(insta_username):
        for i in range(len(delete_comment['data'])):
          if word_in_comment in delete_comment['data'][i]['text']:
            print "comment found "
+           request_url = ( BASE_URL + '/media/%s/comments/{comment-id}?access_token=%s' ) % (media_id , APP_ACCESS_TOKEN)
+           delete_comment = requests.get(request_url).json()
+           print " comment deleted"
            return delete_comment['data'][i]['id']
          else:
            print "no comment found"
@@ -140,3 +152,23 @@ def average_num_of_words_in_comment(insta_username):
         print "total no of word in comment = %s\n" % (len(comment['text'].split()))
 
 average_num_of_words_in_comment(get_comment_id('shubham.is.here'))
+
+#make a control flow to select desired task to with selected user
+
+select_option = raw_input("enter the derised task to do with selected user")
+
+if select_option == 1:
+    get_user_id_by_username('shubhsm.is.here')
+elif select_option == 2:
+    get_user_recent_posts('shubhsm.is.here')
+elif select_option == 3:
+    like_a_post('shubhsm.is.here')
+elif select_option == 4:
+    comment_on_post('shubhsm.is.here')
+elif select_option ==5:
+    get_comment_id('shubhsm.is.here')
+elif select_option ==6:
+    delete_comment('shubhsm.is.here')
+elif select_option == 7:
+    average_num_of_words_in_comment('shubhsm.is.here')
+else :        print " invalid selection"
